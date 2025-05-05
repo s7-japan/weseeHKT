@@ -17,7 +17,7 @@ function RewardsSection() {
             </div>
             <h3 className="text-2xl font-bold mt-4 mb-2">Winner</h3>
             <p className="text-3xl font-bold gradient-text mb-4">¥20,000</p>
-            <p className="text-gray-400">(~₹11,000)</p>
+            {/* <p className="text-gray-400">(~₹11,000)</p> */}
             <div className="w-16 h-1 bg-gradient-to-r from-purple-light to-purple-dark mx-auto my-4"></div>
             <ul className="text-left text-gray-300 space-y-2">
               <li className="flex items-center">
@@ -47,7 +47,8 @@ function RewardsSection() {
             </div>
             <h3 className="text-2xl font-bold mt-4 mb-2">Runners-Up</h3>
             <p className="text-3xl font-bold gradient-text mb-4">¥10,000</p>
-            <p className="text-gray-400">(~₹5,500) each for up to 5 teams</p>
+            {/* (~₹5,500) each for */}
+            <p className="text-gray-400">up to 5 teams</p>
             <div className="w-16 h-1 bg-gradient-to-r from-purple-light to-purple-dark mx-auto my-4"></div>
             <ul className="text-left text-gray-300 space-y-2">
               <li className="flex items-center">

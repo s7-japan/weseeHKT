@@ -6,6 +6,7 @@ import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
 import TracksSection from './components/TracksSection';
 import RewardsSection from './components/RewardsSection';
+import TimelineSection from './components/TimelineSection';
 
 function App() {
   React.useEffect(() => {
@@ -43,6 +44,9 @@ function App() {
       
       {/* Rewards Section */}
       <RewardsSection />
+
+      {/* Timeline Section */}
+      <TimelineSection />
       
       {/* Footer */}
       <footer className="bg-[#0a0a14] border-t border-purple-900/30 py-12">

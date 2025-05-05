@@ -103,11 +103,11 @@ function TracksSection() {
           </div>
         </div>
 
-        <div className="mt-12 text-center">
+        {/* <div className="mt-12  text-center">
           <button className="gradient-bg px-8 py-3 rounded-full text-white font-medium hover:opacity-90 transition btn-glow">
             Explore All Tracks
           </button>
-        </div>
+        </div> */}
       </div>
     </section>
   );

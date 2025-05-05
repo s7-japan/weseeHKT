@@ -6,7 +6,8 @@ function Navigation() {
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-light to-purple-dark flex items-center justify-center">
-            <span className="text-white font-bold">WS</span>
+            <span className="text-white font-bold">WSt</span>
+            
           </div>
           <span className="font-bold text-xl text-white">WeSee<span className="text-purple-400">GPT</span></span>
         </div>
