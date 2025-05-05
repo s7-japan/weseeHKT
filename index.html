@@ -1,0 +1,729 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeSee AI Agents Hackathon 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#10b981',
+                        dark: '#0f172a',
+                        darker: '#070b14',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #070b14;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #6366f1, #10b981);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .gradient-border {
+            position: relative;
+            border-radius: 0.5rem;
+            background: linear-gradient(#0f172a, #0f172a) padding-box,
+                        linear-gradient(90deg, #6366f1, #10b981) border-box;
+            border: 2px solid transparent;
+        }
+        
+        .glow {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+        }
+        
+        .grid-bg {
+            background-image: radial-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .animate-pulse-slow {
+            animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .animate-glow {
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 5px rgba(99, 102, 241, 0.2); }
+            to { box-shadow: 0 0 20px rgba(99, 102, 241, 0.6), 0 0 30px rgba(16, 185, 129, 0.4); }
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(90deg, #6366f1, #10b981);
+            pointer-events: none;
+            opacity: 0;
+        }
+        
+        .timeline-dot::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, #6366f1, #10b981);
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, rgba(99, 102, 241, 0.7), rgba(16, 185, 129, 0.7));
+        }
+        
+        .track-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+        }
+        
+        .track-card:hover .track-icon {
+            transform: scale(1.1);
+        }
+        
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+        
+        .typewriter h1 {
+            overflow: hidden;
+            border-right: .15em solid #6366f1;
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: 
+                typing 3.5s steps(40, end),
+                blink-caret .75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #6366f1; }
+        }
+        
+        .hero-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 grid-bg opacity-30 z-0"></div>
+    <div class="hero-shape bg-primary/20 w-[500px] h-[500px] top-[-100px] right-[-100px]"></div>
+    <div class="hero-shape bg-secondary/20 w-[400px] h-[400px] bottom-[-50px] left-[-100px]"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-darker/80 border-b border-primary/20">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <span class="text-xl font-bold font-display">WeSee<span class="gradient-text">GPT</span></span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="text-gray-300 hover:text-white transition-colors">About</a>
+                <a href="#tracks" class="text-gray-300 hover:text-white transition-colors">Tracks</a>
+                <a href="#timeline" class="text-gray-300 hover:text-white transition-colors">Timeline</a>
+                <a href="#prizes" class="text-gray-300 hover:text-white transition-colors">Prizes</a>
+            </div>
+            <button class="bg-gradient-to-r from-primary to-secondary text-white px-6 py-2 rounded-full font-medium hover:shadow-lg hover:shadow-primary/20 transition-all transform hover:scale-105">
+                Register Now
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="min-h-screen pt-24 relative overflow-hidden">
+        <div class="container mx-auto px-4 py-16 flex flex-col items-center justify-center relative z-10">
+            <div class="animate-float">
+                <div class="w-24 h-24 mx-auto mb-8 relative flex items-center justify-center">
+                    <div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full animate-pulse-slow opacity-50 blur-xl"></div>
+                    <span class="text-3xl font-bold font-display relative z-10">WeSee<span class="gradient-text">GPT</span></span>
+                </div>
+            </div>
+            
+            <div class="typewriter max-w-4xl text-center mb-8">
+                <h1 class="text-4xl md:text-6xl font-bold font-display mb-4">
+                    <span class="gradient-text">WeSee AI Agents Hackathon 2025</span>
+                </h1>
+            </div>
+            
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 text-center max-w-3xl animate-pulse-slow">
+                Build the next generation of AI agents that automate real-world business tasks
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="bg-gradient-to-r from-primary to-secondary text-white px-8 py-3 rounded-full font-medium text-lg hover:shadow-lg hover:shadow-primary/30 transition-all transform hover:scale-105 animate-glow">
+                    Register Now
+                </button>
+                <button class="bg-dark border border-primary/30 text-white px-8 py-3 rounded-full font-medium text-lg hover:border-primary/80 transition-all">
+                    Learn More
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
+                <div class="gradient-border p-4 text-center animate-float" style="animation-delay: 0.2s">
+                    <div class="text-4xl mb-2">🌏</div>
+                    <h3 class="font-medium text-lg">Hybrid Event</h3>
+                    <p class="text-gray-400 text-sm">Online + Offline</p>
+                </div>
+                <div class="gradient-border p-4 text-center animate-float" style="animation-delay: 0.4s">
+                    <div class="text-4xl mb-2">🏆</div>
+                    <h3 class="font-medium text-lg">¥20,000</h3>
+                    <p class="text-gray-400 text-sm">Top Prize</p>
+                </div>
+                <div class="gradient-border p-4 text-center animate-float" style="animation-delay: 0.6s">
+                    <div class="text-4xl mb-2">👥</div>
+                    <h3 class="font-medium text-lg">Team Size</h3>
+                    <p class="text-gray-400 text-sm">3-4 Members</p>
+                </div>
+                <div class="gradient-border p-4 text-center animate-float" style="animation-delay: 0.8s">
+                    <div class="text-4xl mb-2">📅</div>
+                    <h3 class="font-medium text-lg">May 2025</h3>
+                    <p class="text-gray-400 text-sm">Registration: May 1-9</p>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 scroll-indicator">
+                <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold font-display mb-8 text-center">
+                    <span class="gradient-text">What's the Challenge?</span>
+                </h2>
+                
+                <div class="gradient-border p-6 md:p-8 mb-12 relative overflow-hidden">
+                    <div class="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
+                    <p class="text-lg mb-6 relative z-10">
+                        WeSee invites you to build AI-powered Agents — virtual systems that work like digital employees, automating tasks for startups and enterprises.
+                    </p>
+                    <p class="text-lg mb-6 relative z-10">
+                        Whether it's automating sales outreach, managing marketing campaigns, building a fundraising agent, or even developing a virtual CTO, this hackathon challenges you to design and prototype AI agents that think, act, and deliver results.
+                    </p>
+                    <p class="text-lg relative z-10">
+                        Get hands-on with real business challenges inspired by Japan's startup ecosystem, with the chance to collaborate with WeSee's projects and gain international exposure. 🌏
+                    </p>
+                </div>
+                
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <div class="md:w-1/2">
+                        <div class="relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-lg blur-xl"></div>
+                            <div class="gradient-border p-6 relative z-10">
+                                <h3 class="text-2xl font-bold font-display mb-4">About WeSee</h3>
+                                <p class="text-gray-300 mb-4">
+                                    WeSee is a Japan-based AI and blockchain company focused on transforming business operations through smart automation.
+                                </p>
+                                <p class="text-gray-300">
+                                    Our product, WeSeeGPT, is an advanced GenAI platform that acts as a virtual co-founder, providing AI agents that help businesses handle everything from sales and marketing to legal, finance, and fundraising.
+                                </p>
+                                <a href="https://www.weseegpt.com" target="_blank" class="inline-flex items-center mt-4 text-primary hover:text-secondary transition-colors">
+                                    Learn more
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <div class="relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-lg blur-xl"></div>
+                            <div class="gradient-border p-6 relative z-10">
+                                <h3 class="text-2xl font-bold font-display mb-4">Who Can Participate?</h3>
+                                <ul class="space-y-3 text-gray-300">
+                                    <li class="flex items-center">
+                                        <span class="text-xl mr-3">👩‍💻</span>
+                                        Engineering Students
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="text-xl mr-3">💼</span>
+                                        MBA Students
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="text-xl mr-3">🎓</span>
+                                        Undergraduate & Postgraduate Students
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="text-xl mr-3">🆕</span>
+                                        Freshers
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="text-xl mr-3">👔</span>
+                                        Experienced Professionals
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tracks Section -->
+    <section id="tracks" class="py-20 relative">
+        <div class="hero-shape bg-primary/10 w-[400px] h-[400px] top-[20%] left-[-200px]"></div>
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold font-display mb-4 text-center">
+                <span class="gradient-text">Tracks</span>
+            </h2>
+            <p class="text-xl text-gray-300 text-center mb-12 max-w-2xl mx-auto">
+                Pick your agent mission and build the future of business automation
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <div class="gradient-border p-6 track-card transition-all duration-300">
+                    <div class="text-3xl mb-4 track-icon transition-transform duration-300">🧲</div>
+                    <h3 class="text-xl font-bold font-display mb-2">Sales Agent</h3>
+                    <p class="text-gray-300">Automate lead generation & CRM updates</p>
+                </div>
+                <div class="gradient-border p-6 track-card transition-all duration-300">
+                    <div class="text-3xl mb-4 track-icon transition-transform duration-300">📈</div>
+                    <h3 class="text-xl font-bold font-display mb-2">Marketing Agent</h3>
+                    <p class="text-gray-300">Create content & manage campaigns</p>
+                </div>
+                <div class="gradient-border p-6 track-card transition-all duration-300">
+                    <div class="text-3xl mb-4 track-icon transition-transform duration-300">💬</div>
+                    <h3 class="text-xl font-bold font-display mb-2">Customer Support Agent</h3>
+                    <p class="text-gray-300">24/7 AI chat assistant</p>
+                </div>
+                <div class="gradient-border p-6 track-card transition-all duration-300">
+                    <div class="text-3xl mb-4 track-icon transition-transform duration-300">💰</div>
+                    <h3 class="text-xl font-bold font-display mb-2">Fundraising Agent</h3>
+                    <p class="text-gray-300">Scout investors & manage pitch decks</p>
+                </div>
+                <div class="gradient-border p-6 track-card transition-all duration-300">
+                    <div class="text-3xl mb-4 track-icon transition-transform duration-300">🛠</div>
+                    <h3 class="text-xl font-bold font-display mb-2">CTO / Coding Agent</h3>
+                    <p class="text-gray-300">Recommend tech stacks & generate code templates</p>
+                </div>
+                <div class="gradient-border p-6 track-card transition-all duration-300">
+                    <div class="text-3xl mb-4 track-icon transition-transform duration-300">📊</div>
+                    <h3 class="text-xl font-bold font-display mb-2">Financial Advisor Agent</h3>
+                    <p class="text-gray-300">Budgeting & financial forecasting</p>
+                </div>
+                <div class="gradient-border p-6 track-card transition-all duration-300">
+                    <div class="text-3xl mb-4 track-icon transition-transform duration-300">📜</div>
+                    <h3 class="text-xl font-bold font-display mb-2">Legal Advisor Agent</h3>
+                    <p class="text-gray-300">Contract drafting & compliance checker</p>
+                </div>
+                <div class="gradient-border p-6 track-card transition-all duration-300">
+                    <div class="text-3xl mb-4 track-icon transition-transform duration-300">✍️</div>
+                    <h3 class="text-xl font-bold font-display mb-2">Copywriting Agent</h3>
+                    <p class="text-gray-300">Blogs, landing pages & SEO content</p>
+                </div>
+                <div class="gradient-border p-6 track-card transition-all duration-300">
+                    <div class="text-3xl mb-4 track-icon transition-transform duration-300">🧩</div>
+                    <h3 class="text-xl font-bold font-display mb-2">Playground Agent Creator</h3>
+                    <p class="text-gray-300">Build other agents on demand</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="py-20 relative">
+        <div class="hero-shape bg-secondary/10 w-[500px] h-[500px] top-[30%] right-[-200px]"></div>
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold font-display mb-4 text-center">
+                <span class="gradient-text">Hackathon Timeline</span>
+            </h2>
+            <p class="text-xl text-gray-300 text-center mb-12 max-w-2xl mx-auto">
+                Mark your calendar for these important dates
+            </p>
+            
+            <div class="max-w-3xl mx-auto relative">
+                <div class="timeline-line"></div>
+                
+                <div class="ml-8 mb-12 relative timeline-dot">
+                    <div class="gradient-border p-6 animate-float" style="animation-delay: 0.1s">
+                        <h3 class="text-xl font-bold font-display mb-2">Registration</h3>
+                        <p class="text-gray-300 mb-2">May 1–9, 2025</p>
+                        <p class="text-gray-400">Submit your team details and get ready for the challenge</p>
+                    </div>
+                </div>
+                
+                <div class="ml-8 mb-12 relative timeline-dot">
+                    <div class="gradient-border p-6 animate-float" style="animation-delay: 0.3s">
+                        <h3 class="text-xl font-bold font-display mb-2">Online Round 1</h3>
+                        <p class="text-gray-300 mb-2">May 10–11, 2025</p>
+                        <p class="text-gray-400">Submit your pitch deck + 2-minute video</p>
+                    </div>
+                </div>
+                
+                <div class="ml-8 mb-12 relative timeline-dot">
+                    <div class="gradient-border p-6 animate-float" style="animation-delay: 0.5s">
+                        <h3 class="text-xl font-bold font-display mb-2">Online Round 2</h3>
+                        <p class="text-gray-300 mb-2">May 17–18, 2025</p>
+                        <p class="text-gray-400">Prototype demo for selected teams</p>
+                    </div>
+                </div>
+                
+                <div class="ml-8 relative timeline-dot">
+                    <div class="gradient-border p-6 animate-float" style="animation-delay: 0.7s">
+                        <h3 class="text-xl font-bold font-display mb-2">Offline Finals</h3>
+                        <p class="text-gray-300 mb-2">May 24, 2025</p>
+                        <p class="text-gray-400">12-hour sprint (9:00 AM–9:00 PM) at Pune College</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prizes Section -->
+    <section id="prizes" class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold font-display mb-4 text-center">
+                <span class="gradient-text">Rewards & Opportunities</span>
+            </h2>
+            <p class="text-xl text-gray-300 text-center mb-12 max-w-2xl mx-auto">
+                Win exciting prizes and kickstart your career
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="gradient-border p-6 text-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-b from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="text-5xl mb-6 animate-float">🏆</div>
+                    <h3 class="text-2xl font-bold font-display mb-2">Winner</h3>
+                    <div class="text-3xl font-bold gradient-text mb-4">¥20,000</div>
+                    <p class="text-gray-300">(~₹11,000)</p>
+                </div>
+                
+                <div class="gradient-border p-6 text-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-b from-secondary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="text-5xl mb-6 animate-float" style="animation-delay: 0.2s">🥈</div>
+                    <h3 class="text-2xl font-bold font-display mb-2">Runners-Up</h3>
+                    <div class="text-3xl font-bold gradient-text mb-4">¥10,000</div>
+                    <p class="text-gray-300">(~₹5,500 each for up to 5 teams)</p>
+                </div>
+                
+                <div class="gradient-border p-6 text-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-b from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="text-5xl mb-6 animate-float" style="animation-delay: 0.4s">💼</div>
+                    <h3 class="text-2xl font-bold font-display mb-2">Career Opportunities</h3>
+                    <p class="text-gray-300 mb-2">Internship/Job Offers</p>
+                    <p class="text-gray-400">For top-performing teams</p>
+                </div>
+            </div>
+            
+            <div class="mt-12 max-w-3xl mx-auto">
+                <div class="gradient-border p-6">
+                    <h3 class="text-xl font-bold font-display mb-4 text-center">Additional Benefits</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center">
+                            <span class="text-2xl mr-3">✈️</span>
+                            <p class="text-gray-300">Opportunity to travel to Japan</p>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-2xl mr-3">📜</span>
+                            <p class="text-gray-300">Certificates for all finalists</p>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-2xl mr-3">🌟</span>
+                            <p class="text-gray-300">Media feature for winning teams</p>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-2xl mr-3">💸</span>
+                            <p class="text-gray-300">Monthly stipend for internships</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold font-display mb-4 text-center">
+                    <span class="gradient-text">Tools & Resources</span>
+                </h2>
+                <p class="text-xl text-gray-300 text-center mb-12 max-w-2xl mx-auto">
+                    Everything you need to build your AI agent
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="gradient-border p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="text-3xl mr-3">🔓</span>
+                            <h3 class="text-xl font-bold font-display">Open Tech Stack</h3>
+                        </div>
+                        <p class="text-gray-300 mb-4">
+                            Build with your preferred tools and frameworks:
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-dark border border-primary/30 px-3 py-1 rounded-full text-sm">Python</span>
+                            <span class="bg-dark border border-primary/30 px-3 py-1 rounded-full text-sm">LangChain</span>
+                            <span class="bg-dark border border-primary/30 px-3 py-1 rounded-full text-sm">HuggingFace</span>
+                            <span class="bg-dark border border-primary/30 px-3 py-1 rounded-full text-sm">Rasa</span>
+                            <span class="bg-dark border border-primary/30 px-3 py-1 rounded-full text-sm">TensorFlow</span>
+                            <span class="bg-dark border border-primary/30 px-3 py-1 rounded-full text-sm">PyTorch</span>
+                            <span class="bg-dark border border-primary/30 px-3 py-1 rounded-full text-sm">Node.js</span>
+                        </div>
+                    </div>
+                    
+                    <div class="gradient-border p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="text-3xl mr-3">🗂</span>
+                            <h3 class="text-xl font-bold font-display">Support Materials</h3>
+                        </div>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-primary mt-0.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Problem briefs with detailed requirements
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-primary mt-0.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Mentorship from WeSee engineers
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-primary mt-0.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Online community group for Q&A
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-primary mt-0.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Webinars on AI agent building & best practices
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-dark to-darker z-0"></div>
+        <div class="hero-shape bg-primary/10 w-[600px] h-[600px] top-[10%] left-[10%]"></div>
+        <div class="hero-shape bg-secondary/10 w-[500px] h-[500px] bottom-[10%] right-[10%]"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl md:text-5xl font-bold font-display mb-6">
+                    <span class="gradient-text">Ready to unleash your AI agent?</span>
+                </h2>
+                <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                    Join us and build the next generation of autonomous business solutions 🌐✨
+                </p>
+                
+                <div class="flex flex-col md:flex-row justify-center gap-4">
+                    <button class="bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-full font-medium text-lg hover:shadow-lg hover:shadow-primary/30 transition-all transform hover:scale-105 animate-glow">
+                        Register Your Team
+                    </button>
+                    <button class="bg-dark border border-primary/30 text-white px-8 py-4 rounded-full font-medium text-lg hover:border-primary/80 transition-all">
+                        Download Info Pack
+                    </button>
+                </div>
+                
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="gradient-border p-4 text-center">
+                        <div class="text-3xl mb-2">🔹</div>
+                        <p class="text-gray-300">Cutting-edge AI Hackathon</p>
+                    </div>
+                    <div class="gradient-border p-4 text-center">
+                        <div class="text-3xl mb-2">🔹</div>
+                        <p class="text-gray-300">Exciting cash prizes</p>
+                    </div>
+                    <div class="gradient-border p-4 text-center">
+                        <div class="text-3xl mb-2">🔹</div>
+                        <p class="text-gray-300">5-6 month remote internship</p>
+                    </div>
+                    <div class="gradient-border p-4 text-center">
+                        <div class="text-3xl mb-2">🔹</div>
+                        <p class="text-gray-300">Full-time job opportunities</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-darker relative">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <span class="text-xl font-bold font-display">WeSee<span class="gradient-text">GPT</span></span>
+                </div>
+                
+                <div class="flex space-x-6 mb-6 md:mb-0">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 5.16c-.94.42-1.95.7-3.01.82a5.07 5.07 0 0 0 2.23-2.8 10.2 10.2 0 0 1-3.32 1.27 5.1 5.1 0 0 0-8.68 4.65A14.44 14.44 0 0 1 1.67 3.9a5.1 5.1 0 0 0 1.56 6.8 5.06 5.06 0 0 1-2.3-.64v.07a5.1 5.1 0 0 0 4.08 5 5.12 5.12 0 0 1-2.3.08 5.1 5.1 0 0 0 4.77 3.54 10.24 10.24 0 0 1-6.32 2.18c-.41 0-.82-.02-1.22-.07a14.46 14.46 0 0 0 7.82 2.28c9.38 0 14.51-7.77 14.51-14.51 0-.22 0-.44-.01-.66a10.28 10.28 0 0 0 2.53-2.63z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+                        </svg>
+                    </a>
+                </div>
+                
+                <div class="text-gray-400 text-sm">
+                    © 2025 WeSee. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Particle animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const createParticle = (x, y) => {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 5 + 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                
+                document.body.appendChild(particle);
+                
+                // Animate
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 50 + 30;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                let opacity = 1;
+                let scale = 1;
+                let posX = x;
+                let posY = y;
+                
+                const animate = () => {
+                    if (opacity <= 0) {
+                        particle.remove();
+                        return;
+                    }
+                    
+                    posX += vx / 10;
+                    posY += vy / 10;
+                    opacity -= 0.02;
+                    scale += 0.02;
+                    
+                    particle.style.opacity = opacity;
+                    particle.style.transform = `scale(${scale})`;
+                    particle.style.left = `${posX}px`;
+                    particle.style.top = `${posY}px`;
+                    
+                    requestAnimationFrame(animate);
+                };
+                
+                requestAnimationFrame(animate);
+            };
+            
+            // Create particles on button hover
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('mousemove', (e) => {
+                    const rect = button.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    if (Math.random() > 0.85) {
+                        createParticle(e.clientX, e.clientY);
+                    }
+                });
+            });
+            
+            // Smooth scroll for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93afe96ad52f85e4',t:'MTc0NjQ0NDY4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
