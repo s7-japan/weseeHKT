@@ -1,55 +1,101 @@
-# WeSee AI Agents Hackathon Website
+# WeSee AI Agents Hackathon 2025 Website
 
-This is a React application for the WeSee AI Agents Hackathon 2025. The website showcases the hackathon details, tracks, and registration information.
-
-## Getting Started
-
-Follow these instructions to run the project locally:
-
-### Prerequisites
-
-- Node.js (version 14 or later)
-- npm (comes with Node.js)
-
-### Installation
-
-1. Clone this repository or download the files
-2. Navigate to the project directory:
-   ```
-   cd wesee-hackathon
-   ```
-3. Install dependencies:
-   ```
-   npm install
-   ```
-4. Start the development server:
-   ```
-   npm start
-   ```
-5. Open your browser and navigate to `http://localhost:3000`
-
-## Built With
-
-- React
-- TailwindCSS (via CDN)
+A modern, responsive website for the WeSee AI Agents Hackathon, built with React and Tailwind CSS.
 
 ## Features
 
-- Responsive design for all device sizes
-- Interactive animations
-- Modern UI with gradient effects
-- Sections for hackathon details, tracks, and challenges
+- Responsive design that works on all device sizes
+- Modern UI with animations and gradient effects
+- Modular components architecture
+- Interactive elements (FAQ accordion, etc.)
+
+## Sections
+
+1. Navigation
+2. Hero Section
+3. About Section
+4. Tracks Section
+5. Rewards Section
+6. Timeline Section
+7. Tools & Resources Section
+8. FAQ Section
+9. CTA Section
+10. Footer
+
+## Setup Instructions
+
+### Option 1: Using the setup script (Recommended)
+
+1. Make sure the script is executable:
+   ```
+   chmod +x setup.sh
+   ```
+
+2. Run the setup script:
+   ```
+   ./setup.sh
+   ```
+
+This will fix any npm permission issues, install dependencies, and start the development server.
+
+### Option 2: Manual setup
+
+1. Install dependencies:
+   ```
+   npm install
+   ```
+
+2. Start the development server:
+   ```
+   npm start
+   ```
+
+## Build for Production
+
+To create a production build:
+
+```
+npm run build
+```
+
+This will create optimized files in the `build` folder that can be deployed to any static hosting service.
+
+## Technologies Used
+
+- React
+- Tailwind CSS
+- PostCSS
+- CSS Animations
 
 ## Project Structure
 
-- `src/App.js` - Main application component
-- `src/index.css` - Styles for the application
-- `src/tailwind.config.js` - Configuration for TailwindCSS
-- `public/index.html` - HTML template
+```
+public/
+  index.html         # HTML template
+src/
+  components/        # React components
+    AboutSection.js
+    CTASection.js
+    FAQSection.js
+    Footer.js
+    HeroSection.js
+    Navigation.js
+    RewardsSection.js
+    TimelineSection.js
+    ToolsResourcesSection.js
+    TracksSection.js
+  App.js             # Main component
+  index.css          # Global styles
+  index.js           # Entry point
+postcss.config.js    # PostCSS configuration
+tailwind.config.js   # Tailwind CSS configuration
+```
 
 ## Customization
 
-You can modify the content in `App.js` to update the hackathon details, tracks, and other information.
+- Edit component files to change content
+- Modify `tailwind.config.js` to adjust theme
+- Update styles in `index.css` for custom CSS
 
 ## License
 

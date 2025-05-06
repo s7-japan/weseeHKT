@@ -8,6 +8,11 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "tailwindcss": "^3.3.3",
+    "postcss": "^8.4.29",
+    "autoprefixer": "^10.4.15"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

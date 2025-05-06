@@ -1,6 +1,5 @@
 import React from 'react';
 import './index.css';
-import tailwindConfig from './tailwind.config';
 import Navigation from './components/Navigation';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
@@ -13,18 +12,6 @@ import CTASection from './components/CTASection';
 import Footer from './components/Footer';
 
 function App() {
-  React.useEffect(() => {
-    // Initialize Tailwind with the config
-    window.tailwind = {
-      config: tailwindConfig
-    };
-
-    // Add script for tailwind
-    const tailwindScript = document.createElement('script');
-    tailwindScript.src = "https://cdn.tailwindcss.com";
-    document.head.appendChild(tailwindScript);
-  }, []);
-
   return (
     <div className="App">
       {/* Animated Background Elements */}
