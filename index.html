@@ -1673,9 +1673,16 @@
         margin-top: 85px;
       }
 
-      .powered-by > h2 {
+      .powered-by h2 {
         font-size: 32px;
         font-weight: bold;
+      }
+      .brand_logos {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 25px;
+        align-items: center;
       }
     </style>
     <script
@@ -3323,9 +3330,14 @@
           </div>
           <div class="powered-by">
             <h2>powered by</h2>
-            <a href="https://devfolio.co/" target="_blank">
-              <img src="Devfolio-White.png" alt="Devfolio Logo" width="150" />
-            </a>
+            <div class="brand_logos">
+              <a href="https://devfolio.co/" target="_blank">
+                <img src="Devfolio-White.png" alt="Devfolio Logo" width="150" />
+              </a>
+              <a href="https://ethindia.co" target="_blank">
+                <img src="ethindia-light.png" alt="Ethindia Logo" width="150" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
